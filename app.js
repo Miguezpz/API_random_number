@@ -14,11 +14,7 @@ app.get('/randomNumber/:minValue/:maxValue', (req, res) => {
     const minValue = Number(req.params.minValue)
     const maxValue = Number(req.params.maxValue)
 
-    /* if (isNaN(minValue) || isNaN(maxValue)) {
-        return res.status(400).send({error:'Los valores deben ser números'})
-    } */
-
-    if (typeof(minValue) !== Number || typeof(maxValue) !== Number) {
+    if (isNaN(minValue) || isNaN(maxValue)) {
         return res.status(400).send({error:'Los valores deben ser números'})
     }
 
