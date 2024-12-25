@@ -1,34 +1,34 @@
-const port = 8080
-    const express = require('express')
-    const cors = require('cors')
-    const app = express()
-    app.use(express.json())
-    app.use(cors())
+const port = process.env.port || 8080
+const express = require('express')
+const cors = require('cors')
+const app = express()
+app.use(express.json())
+app.use(cors())
 
-    function randomNumberFunction (min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min)
+function randomNumberFunction (min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+app.get('/randomNumber/:minValue/:maxValue', (req, res) => {
+
+    const minValue = Number(req.params.minValue)
+    const maxValue = Number(req.params.maxValue)
+
+    /* if (isNaN(minValue) || isNaN(maxValue)) {
+        return res.status(400).send({error:'Los valores deben ser números'})
+    } */
+
+    if (typeof(minValue) !== Number || typeof(maxValue) !== Number) {
+        return res.status(400).send({error:'Los valores deben ser números'})
     }
 
-    app.get('/randomNumber/:minValue/:maxValue', (req, res) => {
+    const generatedNumber = randomNumberFunction(minValue, maxValue)
 
-        const minValue = Number(req.params.minValue)
-        const maxValue = Number(req.params.maxValue)
+    console.log(`Random number between ${minValue}-${maxValue} is: ${generatedNumber}`)
 
-        /* if (isNaN(minValue) || isNaN(maxValue)) {
-            return res.status(400).send({error:'Los valores deben ser números'})
-        } */
+    res.send({randomNumber: generatedNumber})
+})
 
-        if (typeof(minValue) !== Number || typeof(maxValue) !== Number) {
-            return res.status(400).send({error:'Los valores deben ser números'})
-        }
-
-        const generatedNumber = randomNumberFunction(minValue, maxValue)
-
-        console.log(`Random number between ${minValue}-${maxValue} is: ${generatedNumber}`)
-
-        res.send({randomNumber: generatedNumber})
-    })
-
-    app.listen(port, () => {
-        console.log(`Running server on port ${port}`)
-    })
+app.listen(port, () => {
+    console.log(`Running server on port ${port}`)
+})
